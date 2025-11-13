@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Victor Dodan / 002
  *
  *   This java file contains the problem solutions for the methods lastBoulder,
  *   showDuplicates, and pair methods. You should utilize the Java Collection
@@ -63,13 +63,18 @@ public class ProblemSolutions {
      * returning the 0 if queue is empty else return pq.peek().
      */
 
-  public static int lastBoulder(int[] boulders) {
+    public static int lastBoulder(int[] boulders) {
 
-      //
-      // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
-      //
-      return -1;
-  }
+        PriorityQueue<Integer> queue = new PriorityQueue<>(Collections.reverseOrder());
+        for(Integer x : boulders) {queue.add(x);}
+        while(queue.size() > 1){
+            Integer x = queue.poll();
+            Integer y = queue.poll();
+            if(!x.equals(y)) queue.add(Math.abs(y-x));
+        }
+        if(queue.isEmpty()) return 0;
+        return queue.peek();
+    }
 
 
     /**
@@ -91,10 +96,17 @@ public class ProblemSolutions {
 
     public static ArrayList<String> showDuplicates(ArrayList<String> input) {
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
+        ArrayList<String> duplicates = new ArrayList<>();
+        HashMap<String, Integer> map = new HashMap<>();
+        for(String x : input){
+            map.put(x, map.getOrDefault(x, 0)+1);
+        }
+        for(Map.Entry<String, Integer> x : map.entrySet()){
+            if(x.getValue() > 1) duplicates.add(x.getKey());
+        }
+
+        Collections.sort(duplicates);
+        return duplicates;
 
     }
 
@@ -130,10 +142,17 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> pair(int[] input, int k) {
-
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
+        ArrayList<String> ret = new ArrayList<>();
+        HashSet<Integer> set = new HashSet<>();
+        for(int x : input) {set.add(x);}
+        for(Integer x : set){
+            Integer y = k-x;
+            if(set.contains(y) && x <= y) {
+                ret.add("("+x+", "+y+")");
+            }
+        }
+        //System.out.print(ret+"\n");
+        Collections.sort(ret);
+        return ret;  // Make sure returned lists is sorted as indicated above
     }
 }
